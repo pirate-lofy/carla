@@ -7,6 +7,8 @@
 # For a copy, see <https://opensource.org/licenses/MIT>.
 
 import tarfile
+import os
+from io import StringIO
 
 
 BLUE = '\033[94m'
@@ -78,5 +80,10 @@ def extract_files(container, file_list, out_path):
     for file in file_list:
         print('Copying "' + file + '" to ' + out_path)
         strm, _ = container.get_archive(file)
-        with tarfile.open(fileobj=ReadableStream(strm), mode='r|*') as tar:
-            tar.extractall(out_path)
+        f = open("%s/result.tar.gz" % out_path, "wb")
+        for d in strm:
+            f.write(d)
+        f.close()
+        pw_tar = tarfile.TarFile("%s/result.tar.gz" % out_path)
+        pw_tar.extractall(out_path)
+        os.remove("%s/result.tar.gz" % out_path)

@@ -140,6 +140,7 @@ def main():
 
         print("Closing container " + carla_image_name)
         carla_container.stop()
+        pass
 
 
 if __name__ == '__main__':
