@@ -8,8 +8,6 @@
 
 import tarfile
 import os
-from io import StringIO
-
 
 BLUE = '\033[94m'
 GREEN = '\033[92m'
