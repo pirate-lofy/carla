@@ -258,6 +258,25 @@ for PACKAGE_NAME in "${PACKAGES[@]}" ; do if [[ ${PACKAGE_NAME} != "Carla" ]] ; 
 
       fi
 
+    # Copy the Navigation binary .bin files to package
+    IFS='+' # space is set as delimiter
+    # MAPS_TO_COOK is read into an array as tokens separated by IFS
+    read -ra ADDR <<< "$MAPS_TO_COOK"
+    for i in "${ADDR[@]}"; do # access each element of array
+
+      BIN_FILE_PATH="${CARLAUE4_ROOT_FOLDER}/Content${i:5}"
+      MAP_NAME=${BIN_FILE_PATH##*/}
+      BIN_FILE=$(find "${CARLAUE4_ROOT_FOLDER}/Content" -name "${MAP_NAME}.bin" -print -quit)
+
+      if [ -f "${BIN_FILE}" ] ; then
+
+        SUBST_FILE="${BIN_FILE/${CARLAUE4_ROOT_FOLDER}/${SUBST_PATH}}"
+
+        # Copy the pakcage config file to package
+        mkdir -p "$(dirname ${SUBST_FILE})" && cp "${BIN_FILE}" "$_"
+
+      fi
+
     done
 
     rm -Rf "./CarlaUE4/Metadata"
